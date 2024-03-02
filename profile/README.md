@@ -10,40 +10,53 @@ Place these scripts at the root of all microservices
 > common-up.sh
 
 ```sh
+date
+
 docker network create peerjs-network
 docker network create nginx-rtmp-network
 docker network create monitoring-network
 docker network create message-queue-network
+docker network create xcodeclazz-compilers-network
 
-docker compose -f xcodeclazz-nginx-rtmp-server/docker-compose.yaml up -d --build
-docker compose -f xcodeclazz-prometheus/docker-compose.yaml up -d --build
-docker compose -f xcodeclazz-grafana/docker-compose.yaml up -d --build
-docker compose -f peerjs-dockerized/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-mq/docker-compose.yaml up -d --build
+docker compose -f peerjs-dockerized/docker-compose.yaml up -d --build
+docker compose -f xcodeclazz-grafana/docker-compose.yaml up -d --build
+docker compose -f xcodeclazz-compilers/docker-compose.yaml up -d --build
+docker compose -f xcodeclazz-prometheus/docker-compose.yaml up -d --build
+docker compose -f xcodeclazz-nginx-rtmp-server/docker-compose.yaml up -d --build
+
+date
 ```
 
 > common-down.sh
 
 ```sh
-docker compose -f xcodeclazz-nginx-rtmp-server/docker-compose.yaml down
-docker compose -f xcodeclazz-prometheus/docker-compose.yaml down
-docker compose -f xcodeclazz-grafana/docker-compose.yaml down
-docker compose -f peerjs-dockerized/docker-compose.yaml down
+date
+
 docker compose -f xcodeclazz-mq/docker-compose.yaml down
+docker compose -f peerjs-dockerized/docker-compose.yaml down
+docker compose -f xcodeclazz-grafana/docker-compose.yaml down
+docker compose -f xcodeclazz-compilers/docker-compose.yaml down
+docker compose -f xcodeclazz-prometheus/docker-compose.yaml down
+docker compose -f xcodeclazz-nginx-rtmp-server/docker-compose.yaml down
 
 docker network rm peerjs-network
 docker network rm nginx-rtmp-network
 docker network rm monitoring-network
 docker network rm message-queue-network
+docker network rm xcodeclazz-compilers-network
+
+date
 ```
 
 > services-up.sh
 
 ```sh
+date
+
 docker network create xcodeclazz-admin-network
 docker network create xcodeclazz-batch-network
 docker network create xcodeclazz-browser-network
-docker network create xcodeclazz-compilers-network
 docker network create xcodeclazz-live-network
 docker network create xcodeclazz-monolithic-network
 docker network create xcodeclazz-socket-polling-network
@@ -55,19 +68,21 @@ docker network create address-table-server-network
 docker compose -f xcodeclazz-admin/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-batch/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-browser/docker-compose.yaml up -d --build
-docker compose -f xcodeclazz-compilers/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-live/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-monolithic/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-socket-polling/docker-compose.yaml up -d --build
+
+date
 ```
 
 > services-down.sh
 
 ```sh
+date
+
 docker compose -f xcodeclazz-admin/docker-compose.yaml down
 docker compose -f xcodeclazz-batch/docker-compose.yaml down
 docker compose -f xcodeclazz-browser/docker-compose.yaml down
-docker compose -f xcodeclazz-compilers/docker-compose.yaml down
 docker compose -f xcodeclazz-live/docker-compose.yaml down
 docker compose -f xcodeclazz-monolithic/docker-compose.yaml down
 docker compose -f xcodeclazz-socket-polling/docker-compose.yaml down
@@ -75,7 +90,6 @@ docker compose -f xcodeclazz-socket-polling/docker-compose.yaml down
 docker network rm xcodeclazz-admin-network
 docker network rm xcodeclazz-batch-network
 docker network rm xcodeclazz-browser-network
-docker network rm xcodeclazz-compilers-network
 docker network rm xcodeclazz-live-network
 docker network rm xcodeclazz-monolithic-network
 docker network rm xcodeclazz-socket-polling-network
@@ -83,6 +97,8 @@ docker network rm xcodeclazz-socket-polling-network
 docker network rm xcodeclazz-code-network
 docker network rm xcodeclazz-notes-network
 docker network rm address-table-server-network
+
+date
 ```
 
 > build.sh
@@ -90,21 +106,50 @@ docker network rm address-table-server-network
 ```sh
 #!/bin/bash
 
+date
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Define an array of commands
 commands=(
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.address-table-server"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.batch"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.code"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.live"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.mq"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.socket-polling"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.monolithic-common"
+    "npm run build --prefix $DIR/npmjs/com.xcodeclazz.compile-run-v2"
+
     "npm run build --prefix $DIR/address-table-server"
+    "npm run build --prefix $DIR/address-table-server/client"
+
     "npm run build --prefix $DIR/ionic-express-render-boilerplate"
+    
     "npm run build --prefix $DIR/xcodeclazz-admin"
+    "npm run build --prefix $DIR/xcodeclazz-admin/client"
+
     "npm run build --prefix $DIR/xcodeclazz-batch"
+    "npm run build --prefix $DIR/xcodeclazz-batch/client"
+
     "npm run build --prefix $DIR/xcodeclazz-browser"
+    "npm run build --prefix $DIR/xcodeclazz-browser/client"
+
     "npm run build --prefix $DIR/xcodeclazz-code"
+    "npm run build --prefix $DIR/xcodeclazz-code/client"
+
     "npm run build --prefix $DIR/xcodeclazz-compilers"
+
     "npm run build --prefix $DIR/xcodeclazz-live"
+    "npm run build --prefix $DIR/xcodeclazz-live/client"
+
     "npm run build --prefix $DIR/xcodeclazz-monolithic"
+
     "npm run build --prefix $DIR/xcodeclazz-notes"
+    "npm run build --prefix $DIR/xcodeclazz-notes/client"
+
     "npm run build --prefix $DIR/xcodeclazz-socket-polling"
+    "npm run build --prefix $DIR/xcodeclazz-socket-polling/client"
 )
 
 # Function to run command in the background
@@ -129,6 +174,8 @@ done
 wait
 
 echo "Done Building"
+
+date
 ```
 
 > install-dependencies.sh
@@ -136,10 +183,21 @@ echo "Done Building"
 ```sh
 #!/bin/bash
 
+date
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Define an array of subdirectories (your Node.js projects)
 subdirs=(
+  "$DIR/npmjs/com.xcodeclazz.address-table-server"
+  "$DIR/npmjs/com.xcodeclazz.batch"
+  "$DIR/npmjs/com.xcodeclazz.code"
+  "$DIR/npmjs/com.xcodeclazz.live"
+  "$DIR/npmjs/com.xcodeclazz.socket-polling"
+  "$DIR/npmjs/com.xcodeclazz.compile-run-v2"
+  "$DIR/npmjs/com.xcodeclazz.monolithic-common"
+  "$DIR/npmjs/com.xcodeclazz.mq"
+
   "$DIR/address-table-server" 
   "$DIR/address-table-server/client" 
 
@@ -193,11 +251,15 @@ for pid in "${pids[@]}"; do
 done
 
 echo "All dependencies installed."
+
+date
 ```
 
 > test.sh
 
 ```sh
+date
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 npm run test-all:ci --prefix $DIR/address-table-server
@@ -211,6 +273,8 @@ npm run test-all:ci --prefix $DIR/xcodeclazz-live
 npm run test-all:ci --prefix $DIR/xcodeclazz-monolithic
 npm run test-all:ci --prefix $DIR/xcodeclazz-notes
 npm run test-all:ci --prefix $DIR/xcodeclazz-socket-polling
+
+date
 ```
 
 <!--
