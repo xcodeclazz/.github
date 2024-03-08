@@ -57,17 +57,15 @@ date
 docker network create xcodeclazz-admin-network
 docker network create xcodeclazz-batch-network
 docker network create xcodeclazz-browser-network
+docker network create xcodeclazz-code-network
 docker network create xcodeclazz-live-network
 docker network create xcodeclazz-monolithic-network
 docker network create xcodeclazz-socket-polling-network
 
-docker network create xcodeclazz-code-network
-docker network create xcodeclazz-notes-network
-docker network create address-table-server-network
-
 docker compose -f xcodeclazz-admin/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-batch/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-browser/docker-compose.yaml up -d --build
+docker compose -f xcodeclazz-code/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-live/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-monolithic/docker-compose.yaml up -d --build
 docker compose -f xcodeclazz-socket-polling/docker-compose.yaml up -d --build
@@ -83,6 +81,7 @@ date
 docker compose -f xcodeclazz-admin/docker-compose.yaml down
 docker compose -f xcodeclazz-batch/docker-compose.yaml down
 docker compose -f xcodeclazz-browser/docker-compose.yaml down
+docker compose -f xcodeclazz-code/docker-compose.yaml down
 docker compose -f xcodeclazz-live/docker-compose.yaml down
 docker compose -f xcodeclazz-monolithic/docker-compose.yaml down
 docker compose -f xcodeclazz-socket-polling/docker-compose.yaml down
@@ -90,13 +89,10 @@ docker compose -f xcodeclazz-socket-polling/docker-compose.yaml down
 docker network rm xcodeclazz-admin-network
 docker network rm xcodeclazz-batch-network
 docker network rm xcodeclazz-browser-network
+docker network rm xcodeclazz-code-network
 docker network rm xcodeclazz-live-network
 docker network rm xcodeclazz-monolithic-network
 docker network rm xcodeclazz-socket-polling-network
-
-docker network rm xcodeclazz-code-network
-docker network rm xcodeclazz-notes-network
-docker network rm address-table-server-network
 
 date
 ```
